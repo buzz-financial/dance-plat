@@ -781,14 +781,14 @@ export default function TeacherDashboard() {
 
   // UI rendering (structure and styles adapted from demo dashboard)
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 max-w-screen overflow-x-hidden">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#0a232e] via-[#1a2d36] to-[#1a2328] max-w-screen overflow-x-hidden font-sans" style={{fontFamily: 'Inter, Segoe UI, Arial, Georgia, serif'}}>
       {/* Sidebar Navigation - responsive, now with dashboard title at the top */}
-      <aside className="hidden md:flex flex-col gap-3 pl-6 pr-4 py-6 min-w-[200px] max-w-[260px] fixed top-0 left-0 z-40 h-full bg-gradient-to-b from-slate-900/80 to-purple-900/60 border-r border-purple-900/40 shadow-xl" style={{ height: '100vh' }}>
+      <aside className="hidden md:flex flex-col gap-3 pl-6 pr-4 py-6 min-w-[200px] max-w-[260px] fixed top-0 left-0 z-40 h-full bg-gradient-to-b from-[#14232b]/90 to-[#1a2d36]/70 border-r border-[#bfa76a]/30 shadow-2xl" style={{ height: '100vh', fontFamily: 'Inter, Segoe UI, Arial, Georgia, serif' }}>
         <div className="mb-6 mt-2 flex flex-col items-center">
-          <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent text-center flex items-center justify-center">
-            🎵 Teacher Dashboard
+          <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-[#bfa76a] to-[#1fc2b7] bg-clip-text text-transparent text-center flex items-center justify-center tracking-wide drop-shadow-lg">
+            🤠 Bar Dance Dashboard
           </h1>
-          <p className="hidden xs:block text-xs xs:text-sm sm:text-base text-purple-100 text-center mt-1">
+          <p className="hidden xs:block text-xs xs:text-sm sm:text-base text-[#e9e6d7] text-center mt-1 font-mono">
             Welcome, {profile?.firstName ? `${profile.firstName} ${profile.lastName}` : user?.email ?? ""}
           </p>
         </div>
@@ -796,43 +796,43 @@ export default function TeacherDashboard() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex items-center gap-2 px-2 py-2 rounded-xl font-semibold text-sm lg:text-base transition-all duration-200 text-left shadow-md ${
+            className={`flex items-center gap-2 px-2 py-2 rounded-xl font-semibold text-sm lg:text-base transition-all duration-200 text-left shadow-md border-2 ${
               activeTab === tab
-                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/25"
-                : "glass-effect text-white hover:bg-white/20"
+                ? "bg-gradient-to-r from-[#bfa76a]/90 to-[#1fc2b7]/80 text-[#1a2328] border-[#bfa76a] shadow-lg"
+                : "glass-effect text-[#e9e6d7] border-transparent hover:border-[#1fc2b7]/60 hover:bg-[#1fc2b7]/10"
             }`}
-            style={{ width: '100%' }}
+            style={{ width: '100%', fontFamily: 'inherit' }}
           >
             <span className="text-xl lg:text-2xl">{getTabIcon(tab)}</span>
-            <span className="hidden sm:inline">{tab}</span>
+            <span className="hidden sm:inline tracking-wide">{tab}</span>
           </button>
         ))}
       </aside>
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col w-full min-w-0 max-w-screen overflow-x-hidden md:pl-[260px]">
+      <div className="flex-1 flex flex-col w-full min-w-0 max-w-screen overflow-x-hidden md:pl-[260px]" style={{fontFamily: 'inherit'}}>
         {/* Main Content (Tab Content) */}
-        <div className="flex-1 flex flex-col w-full p-2 xs:p-4 sm:p-6 md:p-10 min-w-0 max-w-screen overflow-x-hidden pt-[30px] xs:pt-[40px] sm:pt-[50px] pb-[80px] xs:pb-[100px] sm:pb-[130px]"> {/* Add top and bottom padding for fixed header and nav */}
+        <div className="flex-1 flex flex-col w-full p-2 xs:p-4 sm:p-6 md:p-10 min-w-0 max-w-screen overflow-x-hidden pt-[30px] xs:pt-[40px] sm:pt-[50px] pb-[80px] xs:pb-[100px] sm:pb-[130px]" style={{background: 'linear-gradient(135deg, #0a232e 0%, #1a2d36 60%, #1a2328 100%)'}}>
           {/* Bottom Navigation Bar for Mobile/Tablet (md and below) */}
           <nav
-            className="fixed left-0 bottom-0 w-full z-50 flex md:hidden bg-gradient-to-t from-slate-900/95 to-slate-900/80 border-t border-purple-900/40 shadow-2xl h-16 xs:h-20 sm:h-24 rounded-t-2xl m-0 p-0"
-            style={{ margin: 0, padding: 0 }}
+            className="fixed left-0 bottom-0 w-full z-50 flex md:hidden bg-gradient-to-t from-[#0a232e]/95 to-[#1a2d36]/90 border-t border-[#bfa76a]/30 shadow-2xl h-16 xs:h-20 sm:h-24 rounded-t-2xl m-0 p-0"
+            style={{ margin: 0, padding: 0, fontFamily: 'inherit' }}
           >
             {["Students", "Upcoming", "Homework", "Calendar", "Finance", "Settings"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 flex flex-col items-center justify-center py-2 xs:py-3 sm:py-4 text-2xl xs:text-3xl sm:text-4xl transition-all duration-200 relative ${activeTab === tab ? "text-indigo-400" : "text-purple-200 hover:text-indigo-300"}`}
+                className={`flex-1 flex flex-col items-center justify-center py-2 xs:py-3 sm:py-4 text-2xl xs:text-3xl sm:text-4xl transition-all duration-200 relative ${activeTab === tab ? "text-[#bfa76a]" : "text-[#e9e6d7] hover:text-[#1fc2b7]"}`}
                 aria-label={tab}
-                style={{ minWidth: 0 }}
+                style={{ minWidth: 0, fontFamily: 'inherit' }}
               >
-                <span className={`mb-0 flex items-center justify-center w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 ${activeTab === tab ? "bg-gradient-to-t from-indigo-900/60 to-slate-900/80 rounded-2xl shadow-lg" : ""}`}>{getTabIcon(tab)}</span>
+                <span className={`mb-0 flex items-center justify-center w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 ${activeTab === tab ? "bg-gradient-to-t from-[#bfa76a]/30 to-[#1fc2b7]/20 rounded-2xl shadow-lg" : ""}`}>{getTabIcon(tab)}</span>
                 {/* Hide tab text on mobile, show only on xs+ screens */}
-                <span className="hidden xs:inline text-[11px] xs:text-xs sm:text-sm mt-0.5">{tab}</span>
+                <span className="hidden xs:inline text-[11px] xs:text-xs sm:text-sm mt-0.5 tracking-wide">{tab}</span>
               </button>
             ))}
           </nav>
           {/* Tab Content */}
-          <div className="glass-effect p-1 xs:p-2 sm:p-4 md:p-8 lg:p-12 xl:p-16 rounded-2xl shadow-2xl min-h-[300px] xs:min-h-[400px] sm:min-h-[500px] animate-fadeIn overflow-y-auto w-full flex flex-col items-center max-w-screen overflow-x-hidden pb-[90px] xs:pb-[110px] sm:pb-[130px] lg:max-w-7xl xl:max-w-8xl mx-auto">
+          <div className="glass-effect p-1 xs:p-2 sm:p-4 md:p-8 lg:p-12 xl:p-16 rounded-2xl shadow-2xl min-h-[300px] xs:min-h-[400px] sm:min-h-[500px] animate-fadeIn overflow-y-auto w-full flex flex-col items-center max-w-screen overflow-x-hidden pb-[90px] xs:pb-[110px] sm:pb-[130px] lg:max-w-7xl xl:max-w-8xl mx-auto border-2 border-[#bfa76a]/30 bg-gradient-to-br from-[#1a2d36]/80 to-[#0a232e]/90" style={{backdropFilter: 'blur(8px)', fontFamily: 'inherit'}}>
             {/* Students Tab */}
             {activeTab === "Students" && (
               <div className="space-y-6 pt-4 xs:pt-6 sm:pt-8 w-full max-w-full lg:max-w-4xl xl:max-w-5xl mx-auto">

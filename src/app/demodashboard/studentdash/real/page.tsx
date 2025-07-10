@@ -657,7 +657,7 @@ export default function StudentDashReal() {
   // Removed unused: handleBookConfirm
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-100">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#18344a] via-[#23404e] to-[#2c3e4f] font-sans" style={{fontFamily: 'Inter, Segoe UI, Arial, sans-serif'}}>
       {/* Booking Success Modal (only after confirmation) */}
       {bookingSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -674,29 +674,29 @@ export default function StudentDashReal() {
         </div>
       )}
       {/* Sidebar Navigation */}
-      <nav className="hidden md:flex fixed top-0 left-0 h-full z-30 w-56 lg:w-72 backdrop-blur-lg bg-white/80 border-r border-white/20 p-4 lg:p-6 flex-col space-y-3 shadow-2xl transition-all duration-300" style={{maxHeight:'100vh',overflowY:'auto'}}>
+      <nav className="hidden md:flex fixed top-0 left-0 h-full z-30 w-56 lg:w-72 backdrop-blur-lg bg-gradient-to-br from-[#1a2a33] to-[#22303a] border-r border-[#2c3e4f]/60 p-4 lg:p-6 flex-col space-y-3 shadow-2xl transition-all duration-300" style={{maxHeight:'100vh',overflowY:'auto'}}>
         <div className="mb-8 flex flex-col items-center gap-2">
-          <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full text-2xl text-white shadow-lg">
-            🎵
+          <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-[#2c3e4f] to-[#3a536b] rounded-full text-2xl text-gold-400 shadow-lg border-2 border-gold-400" style={{color:'#ffd700', borderColor:'#ffd700'}}>
+            🪕
           </div>
-          <p className="text-sm text-gray-700 font-semibold">Student Portal</p>
+          <p className="text-sm text-[#e6e2d3] font-semibold tracking-wide" style={{fontFamily:'Merriweather, serif'}}>Bar Student</p>
         </div>
         {tabs.map((tab, index) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`group relative py-4 px-7 rounded-xl text-left font-semibold transition-all duration-300 transform hover:scale-105 w-full ${activeTab === tab ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25" : "text-gray-700 hover:bg-white/60 hover:text-purple-600 hover:shadow-lg"}`}
-            style={{ animationDelay: `${index * 100}ms` }}
+            className={`group relative py-4 px-7 rounded-xl text-left font-semibold transition-all duration-300 transform hover:scale-105 w-full ${activeTab === tab ? "bg-gradient-to-r from-[#1e3a4c] to-[#2c3e4f] text-[#ffd700] shadow-lg border-l-4 border-[#ffd700]" : "text-[#e6e2d3] hover:bg-[#22303a]/60 hover:text-[#ffd700] hover:shadow-lg"}`}
+            style={{ animationDelay: `${index * 100}ms`, fontFamily:'Inter, Segoe UI, Arial, sans-serif', letterSpacing:'0.01em' }}
           >
             <div className="flex items-center justify-between gap-4 w-full">
               <span className="text-lg flex-shrink-0">{getTabIcon(tab)}</span>
-              <span className="ml-2 text-base truncate text-left w-full">{tab}</span>
+              <span className="ml-2 text-base truncate text-left w-full" style={{fontFamily:'Merriweather, serif'}}>{tab}</span>
             </div>
           </button>
         ))}
       </nav>
       {/* Bottom Navigation Bar for Mobile */}
-      <nav className="fixed bottom-0 left-0 right-0 z-20 flex md:hidden bg-white/90 border-t border-gray-200 shadow-2xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-20 flex md:hidden bg-gradient-to-t from-[#22303a] to-[#2c3e4f]/90 border-t border-[#ffd700]/30 shadow-2xl">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -710,20 +710,18 @@ export default function StudentDashReal() {
         ))}
       </nav>
       {/* Main Content */}
-      <main className="relative z-10 flex-1 p-8 overflow-auto pb-20 md:pb-0 md:ml-56 lg:ml-72 transition-all duration-300">
+      <main className="relative z-10 flex-1 p-8 overflow-auto pb-20 md:pb-0 md:ml-56 lg:ml-72 transition-all duration-300" style={{fontFamily:'Inter, Segoe UI, Arial, sans-serif', background:'none'}}>
         {activeTab === "Home" && (
           <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto animate-fadeIn px-4 sm:px-6 lg:px-8">
-            <div className="relative bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-2xl text-white overflow-hidden">
+            <div className="relative bg-gradient-to-r from-[#18344a] via-[#23404e] to-[#2c3e4f] p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-2xl text-[#f8f6f2] overflow-hidden border border-[#ffd700]/20" style={{fontFamily:'Merriweather, serif'}}>
               <div className="relative z-10">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 animate-slideInLeft leading-tight">
-                  Welcome Back, {profile && (profile.firstName || profile.lastName) ? `${profile.firstName ?? ''} ${profile.lastName ?? ''}`.trim() : user.email}! 🎉
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 animate-slideInLeft leading-tight tracking-tight" style={{color:'#ffd700', fontFamily:'Merriweather, serif'}}>
+                  Welcome Back, {profile && (profile.firstName || profile.lastName) ? `${profile.firstName ?? ''} ${profile.lastName ?? ''}`.trim() : user.email}! <span style={{color:'#2ec4b6'}}>🤠</span>
                 </h2>
                 {nextLesson && (
                   <div className="animate-slideInLeft animation-delay-200">
-                    <p className="text-base sm:text-lg lg:text-xl text-purple-100 mb-2">
-                      Your next session is on
-                    </p>
-                    <span className="inline-block font-bold text-yellow-300 px-3 py-2 bg-white/20 rounded-full text-sm sm:text-base">
+                    <p className="text-base sm:text-lg lg:text-xl text-[#e6e2d3] mb-2" style={{fontFamily:'Inter, Segoe UI, Arial, sans-serif'}}>Your next session is on</p>
+                    <span className="inline-block font-bold text-[#ffd700] px-3 py-2 bg-[#2ec4b6]/20 rounded-full text-sm sm:text-base border border-[#ffd700]/40">
                       {new Date(nextLesson.date + ' ' + nextLesson.time).toLocaleString()}
                     </span>
                   </div>
@@ -732,14 +730,12 @@ export default function StudentDashReal() {
             </div>
             {/* Personal Info */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              <div className="group bg-white/70 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="group bg-gradient-to-br from-[#22303a]/80 to-[#2c3e4f]/80 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-xl border border-[#ffd700]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                 <div className="flex items-center mb-4 sm:mb-6">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-lg sm:text-xl mr-3 sm:mr-4 flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] rounded-full flex items-center justify-center text-[#23404e] text-lg sm:text-xl mr-3 sm:mr-4 flex-shrink-0 border-2 border-[#ffd700]">
                     👤
                   </div>
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent leading-tight">
-                    Personal Info
-                  </h3>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] bg-clip-text text-transparent leading-tight tracking-tight" style={{fontFamily:'Merriweather, serif'}}>Personal Info</h3>
                 </div>
                 <div className="space-y-3 sm:space-y-4">
                   {profile && (() => {
@@ -762,9 +758,9 @@ export default function StudentDashReal() {
                       "Skill Level": profile.skillLevel || '',
                     };
                     return Object.entries(info).map(([key, value]) => (
-                      <div key={key} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 rounded-xl bg-gradient-to-r from-gray-50 to-white hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 space-y-1 sm:space-y-0">
-                        <span className="font-semibold text-gray-700 text-sm sm:text-base">{key}:</span>
-                        <span className="text-gray-800 font-medium text-sm sm:text-base break-words">{value}</span>
+                      <div key={key} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 rounded-xl bg-gradient-to-r from-[#2c3e4f]/60 to-[#18344a]/60 hover:from-[#ffd700]/10 hover:to-[#2ec4b6]/10 transition-all duration-300 space-y-1 sm:space-y-0">
+                        <span className="font-semibold text-[#ffd700] text-sm sm:text-base" style={{fontFamily:'Merriweather, serif'}}>{key}:</span>
+                        <span className="text-[#f8f6f2] font-medium text-sm sm:text-base break-words">{value}</span>
                       </div>
                     ));
                   })()}
@@ -774,25 +770,23 @@ export default function StudentDashReal() {
               <PracticeStreak />
             </div>
             {/* Homework Section */}
-            <div className="bg-white/70 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 mb-8 sm:mb-10 lg:mb-12">
+            <div className="bg-gradient-to-br from-[#22303a]/80 to-[#2c3e4f]/80 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-xl border border-[#ffd700]/20 mb-8 sm:mb-10 lg:mb-12">
               <div className="flex items-center mb-4 sm:mb-6">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-lg sm:text-xl mr-3 sm:mr-4 flex-shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] rounded-full flex items-center justify-center text-[#23404e] text-lg sm:text-xl mr-3 sm:mr-4 flex-shrink-0 border-2 border-[#ffd700]">
                   📚
                 </div>
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent leading-tight">
-                  Homework Assignments
-                </h3>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] bg-clip-text text-transparent leading-tight tracking-tight" style={{fontFamily:'Merriweather, serif'}}>Homework Assignments</h3>
               </div>
               {/* Progress Tracker */}
               {homework.length > 0 && (
                 <div className="mb-4 flex items-center gap-4">
-                  <span className="font-semibold text-orange-700">Progress:</span>
-                  <div className="flex-1 bg-orange-100 rounded-full h-4 relative">
+                  <span className="font-semibold text-[#ffd700]">Progress:</span>
+                  <div className="flex-1 bg-[#2ec4b6]/30 rounded-full h-4 relative">
                     <div
-                      className="bg-gradient-to-r from-orange-400 to-red-400 h-4 rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] h-4 rounded-full transition-all duration-500"
                       style={{ width: `${Math.round((homework.filter(h => h.done).length / homework.length) * 100)}%` }}
                     />
-                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-orange-900">
+                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-[#18344a]">
                       {Math.round((homework.filter(h => h.done).length / homework.length) * 100)}%
                     </span>
                   </div>
@@ -800,24 +794,24 @@ export default function StudentDashReal() {
               )}
               <div className="space-y-4">
                 {homework.length === 0 ? (
-                  <p className="text-gray-500">No homework assignments yet.</p>
+                  <p className="text-[#e6e2d3]">No homework assignments yet.</p>
                 ) : (
                   homework.map((assignment) => (
-                    <div key={assignment.id} className="p-4 sm:p-5 rounded-xl border-l-4 bg-gradient-to-r from-orange-50 to-red-50 border-orange-500">
+                    <div key={assignment.id} className="p-4 sm:p-5 rounded-xl border-l-4 bg-gradient-to-r from-[#2c3e4f]/60 to-[#18344a]/60 border-[#ffd700]">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                         <div className="flex-1">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                            <h4 className="text-lg sm:text-xl font-bold text-gray-800">{assignment.title}</h4>
+                            <h4 className="text-lg sm:text-xl font-bold text-[#ffd700]" style={{fontFamily:'Merriweather, serif'}}>{assignment.title}</h4>
                           </div>
-                          <p className="text-gray-700 text-sm sm:text-base mb-3 leading-relaxed">{assignment.description}</p>
-                          <div className="flex flex-col sm:flex-row gap-2 text-xs sm:text-sm text-gray-600">
+                          <p className="text-[#f8f6f2] text-sm sm:text-base mb-3 leading-relaxed">{assignment.description}</p>
+                          <div className="flex flex-col sm:flex-row gap-2 text-xs sm:text-sm text-[#2ec4b6]">
                             <span><strong>Assigned:</strong> {assignment.assignedDate}</span>
                             <span><strong>Due:</strong> {assignment.dueDate}</span>
                           </div>
                         </div>
                         <div className="flex flex-col items-end gap-2 min-w-[120px]">
                           <button
-                            className={`px-4 py-2 rounded-lg font-bold text-xs shadow transition-all duration-200 ${assignment.done ? 'bg-green-400 text-white hover:bg-green-500' : 'bg-gray-200 text-gray-700 hover:bg-orange-200'}`}
+                            className={`px-4 py-2 rounded-lg font-bold text-xs shadow transition-all duration-200 ${assignment.done ? 'bg-[#2ec4b6] text-[#18344a] hover:bg-[#ffd700]' : 'bg-[#ffd700]/20 text-[#ffd700] hover:bg-[#2ec4b6]/20 hover:text-[#2ec4b6]'}`}
                             onClick={async () => {
                               const firestore = await import("firebase/firestore");
                               const hwRef = firestore.doc(collection(db, "homework"), assignment.id);
@@ -837,16 +831,14 @@ export default function StudentDashReal() {
           </div>
         )}
         {activeTab === "Book" && (
-          <div className="bg-white/80 backdrop-blur-lg p-4 sm:p-8 rounded-3xl shadow-2xl border border-white/30 max-w-full mx-auto animate-fadeIn">
+          <div className="bg-gradient-to-br from-[#22303a]/90 to-[#2c3e4f]/90 backdrop-blur-lg p-4 sm:p-8 rounded-3xl shadow-2xl border border-[#ffd700]/30 max-w-full mx-auto animate-fadeIn">
             <div className="flex flex-col sm:flex-row items-center mb-6 sm:mb-8">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center text-white text-xl sm:text-2xl mb-4 sm:mb-0 sm:mr-6 shadow-lg">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] rounded-2xl flex items-center justify-center text-[#23404e] text-xl sm:text-2xl mb-4 sm:mb-0 sm:mr-6 shadow-lg border-2 border-[#ffd700]">
                 📅
               </div>
               <div className="text-center sm:text-left">
-                <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                  Book Lessons
-                </h2>
-                <p className="text-gray-600 mt-1 text-sm sm:text-base">Select your preferred available times</p>
+                <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] bg-clip-text text-transparent tracking-tight" style={{fontFamily:'Merriweather, serif'}}>Book Lessons</h2>
+                <p className="text-[#e6e2d3] mt-1 text-sm sm:text-base">Select your preferred available times</p>
               </div>
             </div>
 
@@ -865,8 +857,8 @@ export default function StudentDashReal() {
         )}
         {/** Buy tab removed for buy-as-you-book flow */}
         {activeTab === "Upcoming" && (
-          <div className="bg-white/80 backdrop-blur-lg p-4 sm:p-6 lg:p-8 rounded-3xl shadow-2xl border border-white/30 animate-fadeIn max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-purple-700">Upcoming Lessons</h2>
+          <div className="bg-gradient-to-br from-[#22303a]/90 to-[#2c3e4f]/90 backdrop-blur-lg p-4 sm:p-6 lg:p-8 rounded-3xl shadow-2xl border border-[#ffd700]/30 animate-fadeIn max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] bg-clip-text text-transparent tracking-tight" style={{fontFamily:'Merriweather, serif'}}>Upcoming Lessons</h2>
             {bookings.length === 0 ? (
               <p className="text-center text-gray-500 py-10">
                 You have no upcoming lessons. Book some lessons now!
@@ -882,7 +874,7 @@ export default function StudentDashReal() {
                 const diffDays = Math.floor((lessonDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
                 const canReschedule = diffDays >= 7;
                 return (
-                  <div key={booking.id} className="p-4 sm:p-5 rounded-xl border-l-4 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-500">
+                  <div key={booking.id} className="p-4 sm:p-5 rounded-xl border-l-4 bg-gradient-to-r from-[#2c3e4f]/60 to-[#18344a]/60 border-[#ffd700]">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                       <div className="flex-1">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
@@ -894,16 +886,16 @@ export default function StudentDashReal() {
                           <span><strong>Rate:</strong> {typeof booking.rate === 'number' ? `$${booking.rate}/lesson` : 'N/A'}</span>
                         </div>
                       </div>
-                      <div className="flex flex-col gap-2 min-w-[120px] items-end">
-                        <button
-                          className="px-4 py-2 rounded-lg font-bold text-xs shadow bg-red-200 text-red-700 hover:bg-red-300 transition"
-                          onClick={() => setCancelModal({ open: true, booking })}
+                        <div className="flex flex-col gap-2 min-w-[120px] items-end">
+                          <button
+                            className="px-4 py-2 rounded-lg font-bold text-xs shadow bg-[#ffd700]/20 text-[#ffd700] hover:bg-[#ffd700]/40 transition"
+                            onClick={() => setCancelModal({ open: true, booking })}
                         >
                           Cancel
                         </button>
                         {canReschedule && (
                           <button
-                            className="px-4 py-2 rounded-lg font-bold text-xs shadow bg-blue-200 text-blue-700 hover:bg-blue-300 transition"
+                            className="px-4 py-2 rounded-lg font-bold text-xs shadow bg-[#2ec4b6]/20 text-[#2ec4b6] hover:bg-[#2ec4b6]/40 transition"
                             onClick={() => setRescheduleModal({ open: true, booking })}
                           >
                             Reschedule
@@ -985,33 +977,31 @@ export default function StudentDashReal() {
           </div>
         )}
         {activeTab === "Account" && (
-          <div className="bg-white/80 backdrop-blur-lg p-4 sm:p-6 lg:p-8 rounded-3xl shadow-2xl border border-white/30 animate-fadeIn max-w-2xl mx-auto flex flex-col items-center">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-purple-700">Account</h2>
+          <div className="bg-gradient-to-br from-[#22303a]/90 to-[#2c3e4f]/90 backdrop-blur-lg p-4 sm:p-6 lg:p-8 rounded-3xl shadow-2xl border border-[#ffd700]/30 animate-fadeIn max-w-2xl mx-auto flex flex-col items-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] bg-clip-text text-transparent tracking-tight" style={{fontFamily:'Merriweather, serif'}}>Account</h2>
             <div className="flex flex-col gap-6 w-full">
                 {/** Account details and actions here */}
-              <div className="w-full p-4 sm:p-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl shadow-md">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-                  Account Details
-                </h3>
+              <div className="w-full p-4 sm:p-6 bg-gradient-to-r from-[#2c3e4f]/60 to-[#18344a]/60 rounded-2xl shadow-md border border-[#ffd700]/20">
+                <h3 className="text-lg sm:text-xl font-semibold text-[#ffd700] mb-4" style={{fontFamily:'Merriweather, serif'}}>Account Details</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Email:</span>
-                    <span className="font-medium text-gray-800">{user.email}</span>
+                    <span className="text-[#2ec4b6]">Email:</span>
+                    <span className="font-medium text-[#f8f6f2]">{user.email}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Name:</span>
-                    <span className="font-medium text-gray-800">{profile?.firstName} {profile?.lastName}</span>
+                    <span className="text-[#2ec4b6]">Name:</span>
+                    <span className="font-medium text-[#f8f6f2]">{profile?.firstName} {profile?.lastName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Member since:</span>
-                    <span className="font-medium text-gray-800">{accountCreatedAt ? new Date(accountCreatedAt).toLocaleDateString() : ''}</span>
+                    <span className="text-[#2ec4b6]">Member since:</span>
+                    <span className="font-medium text-[#f8f6f2]">{accountCreatedAt ? new Date(accountCreatedAt).toLocaleDateString() : ''}</span>
                   </div>
                 </div>
               </div>
               <div className="w-full flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => setShowPaymentModal(true)}
-                  className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-[#ffd700] to-[#2ec4b6] text-[#18344a] font-semibold shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 border border-[#ffd700]/40"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

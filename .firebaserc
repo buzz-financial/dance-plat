@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "music-plat"
-  }
+    "default": "dance-plat",
+    "dance": "dance-plat"
+  },
+  "targets": {},
+  "etags": {}
 }

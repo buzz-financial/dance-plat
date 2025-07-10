@@ -182,11 +182,9 @@ export default function Home() {
             <p className="text-lg font-sans text-[#e0eceb]">
               Email: <a href={`mailto:${teacher?.email || 'country.dance@example.com'}`} className="text-[#f1c40f] hover:underline">{teacher?.email || 'country.dance@example.com'}</a>
             </p>
-            {teacher?.phone && (
-              <p className="text-lg font-sans text-[#e0eceb]">
-                Phone: <a href={`tel:${teacher.phone}`} className="text-[#43aa8b] hover:underline">{teacher.phone}</a>
-              </p>
-            )}
+            <p className="text-lg font-sans text-[#e0eceb]">
+              Phone: <a href={`tel:${teacher?.phone || '555-555-5555'}`} className="text-[#43aa8b] hover:underline">{teacher?.phone || '555-555-5555'}</a>
+            </p>
           </div>
         </div>
       </section>

@@ -1,25 +1,41 @@
-This project is built with Next.js, Firebase (authentication, hosting, and Firestore database), Tailwind CSS, and TypeScript.
+## Country Bar Dance Instructor Platform
 
-## Overview
-This is a modern music lesson management platform for teachers and students. It provides real-time dashboards, booking, homework, and progress tracking, all fully synced via Firebase.
+This project is a modern web platform for country dance instructors and bar/event owners, built with Next.js, Firebase (authentication, hosting, Firestore), Tailwind CSS, and TypeScript.
 
-## Main Pages & Features
-- **Landing Page:** Intro site with information about the service and options to sign up, log in, or try a demo.
-- **Student Dashboard:**
-  - View and complete homework assignments (real-time updates)
-  - Book and purchase lessons using the teacher's current rate
-  - Track lesson progress and practice streaks
-  - Manage personal account details
-  - See upcoming and past lessons
-- **Teacher Dashboard:**
-  - Set and update the universal lesson rate (instantly reflected for all students)
-  - Assign and track homework for each student (real-time sync)
-  - Manage student roster and lesson bookings
-  - View and edit notes for each student
-  - Access a calendar of all upcoming lessons
-  - Update personal and site information
+### What It Does
+* Book and manage country swing & line dance lesson nights for bars, venues, and private events
+* Real-time instructor dashboard for managing bookings, rates, and contact info
+* Bar/event owners can view pricing, success stories, and contact the instructor directly
+* All data is live and synced via Firebase
+
+### Main Features
+- **Landing Page:**
+  - Modern, adult-focused design with bar/country vibe
+  - Info about services, pricing, and instructor
+  - "Bar Success Stories" testimonial rotator
+  - Easy sign up and log in for instructors
+- **Instructor Dashboard:**
+  - Set lesson rates and update bio/contact info
+  - Manage bookings and see upcoming events
+  - Real-time updates for all changes
+- **Bar/Owner Experience:**
+  - See available lesson packages and pricing
+  - Contact instructor by email or phone
+  - View testimonials and how dance nights boost business
 - **Demo Mode:**
-  - Preview the student dashboard with static sample data (no login required)
+  - Preview the platform with sample data (no login required)
 
-All data and updates are live and consistent across all users, with no per-student or per-booking custom rates. The app is designed for a seamless, modern experience for both teachers and students.
+### Tech Stack
+- Next.js (React framework)
+- Firebase (Firestore, Auth, Hosting)
+- Tailwind CSS
+- TypeScript
+
+### Quick Start
+1. Clone the repo and install dependencies
+2. Set up Firebase project and add your config to `.env`
+3. Run `npm run dev` to start the local server
+
+---
+For questions or to book a lesson night, see the Contact section on the home page.
 

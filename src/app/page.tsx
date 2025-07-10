@@ -91,8 +91,8 @@ export default function Home() {
 
 
   // Fallbacks for title/tagline and rate
-  const siteTitle = teacher?.siteTitle && teacher.siteTitle.trim() ? teacher.siteTitle : "MUSIC LESSONS";
-  const siteTagline = teacher?.siteTagline && teacher.siteTagline.trim() ? teacher.siteTagline : "Personalized. Professional. Powerful.";
+  const siteTitle = teacher?.siteTitle && teacher.siteTitle.trim() ? teacher.siteTitle : "DANCE LESSONS";
+  const siteTagline = teacher?.siteTagline && teacher.siteTagline.trim() ? teacher.siteTagline : "A unique, fun way to boost attendance at your bar.";
   const rate = typeof teacher?.rate === 'number' && !isNaN(teacher.rate) ? teacher.rate : 60;
 
   return (

@@ -118,29 +118,13 @@ export default function TeacherDashboard() {
         // --- Fetch ALL students (not just those with bookings) ---
         // Fetch all students with role: "student" and filter out deleted in JS (handles missing field)
         const studentsSnap = await getDocs(query(collection(db, "users"), where("role", "==", "student")));
-        const studentsList = studentsSnap.docs
-          .map(doc => ({ id: doc.id, ...(doc.data() as Omit<Student, "id">) }))
-          .filter(student => student.deleted !== true); // Exclude only if deleted === true
+        // studentsList removed (not used)
         // setStudents removed (state not tracked)
 
         // --- Fetch ALL bookings (real-time, single teacher app) ---
         const bookingsQuery = collection(db, "bookings");
         onSnapshot(bookingsQuery, (snap) => {
-          const bookingsData: Booking[] = snap.docs.map(doc => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              teacherId: data.teacherId ?? "",
-              studentId: data.studentId ?? "",
-              date: data.date ?? "",
-              time: data.time ?? "",
-              length: data.length,
-              status: data.status,
-              slotId: data.slotId,
-              createdAt: data.createdAt,
-              rate: data.rate,
-            } as Booking;
-          });
+          // bookingsData removed (not used)
           // setBookings removed (state not tracked)
         });
 
@@ -148,7 +132,7 @@ export default function TeacherDashboard() {
         const slotsQuery = query(collection(db, "lessonSlots"), where("teacherId", "==", firebaseUser.uid));
         onSnapshot(slotsQuery, (snap) => {
           // Merge booking info into lessonSlots
-        const slots = snap.docs.map(doc => ({ id: doc.id, ...(doc.data() as Omit<LessonSlot, "id">) }) as LessonSlot);
+        // slots removed (not used)
         // Attach booking info to slots
         // setLessonSlots removed (state not tracked)
         });

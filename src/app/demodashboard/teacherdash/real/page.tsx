@@ -162,24 +162,50 @@ export default function TeacherDashboard() {
       setContactInfo((prev) => {
         if (!contactEdit) {
           return {
-            email: typeof profile.email === "string" ? profile.email : "", // from site
-            phone: typeof profile.phone === "string" ? profile.phone : "", // from site
+            email:
+              typeof profile.email === "string" && profile.email.trim()
+                ? profile.email
+                : "country.dance@example.com",
+            phone:
+              typeof profile.phone === "string" && profile.phone.trim()
+                ? profile.phone
+                : "555-555-5555",
           };
         }
         return prev;
       });
       if (!bioEdit) {
-        setBio(typeof profile.bio === "string" ? profile.bio : ""); // from site
+        setBio(
+          typeof profile.bio === "string" && profile.bio.trim().length > 0
+            ? profile.bio
+            : "Authentic country swing and line dance lessons led by a seasoned instructor. Perfect for bars, events, and anyone looking to bring a true country vibe to their venue."
+        );
       }
       if (!siteTitleEdit) {
-        setSiteTitle(typeof profile.siteTitle === "string" ? profile.siteTitle : "DANCE LESSONS"); // from site
+        setSiteTitle(
+          typeof profile.siteTitle === "string" && profile.siteTitle.trim()
+            ? profile.siteTitle
+            : "COUNTRY SWING & LINE DANCE LESSONS"
+        );
       }
       if (!siteTaglineEdit) {
-        setSiteTagline(typeof profile.siteTagline === "string" ? profile.siteTagline : "Personalized. Professional. Powerful."); // from site
+        setSiteTagline(
+          typeof profile.siteTagline === "string" && profile.siteTagline.trim()
+            ? profile.siteTagline
+            : "Bring authentic country energy and a packed dance floor to your bar or event."
+        );
       }
       if (!rateEdit) {
-        setRate(typeof profile.rate === "number" ? profile.rate : 300);
-        setRateInput(String(typeof profile.rate === "number" ? profile.rate : 300));
+        setRate(
+          typeof profile.rate === "number" && !isNaN(profile.rate)
+            ? profile.rate
+            : 300
+        );
+        setRateInput(
+          typeof profile.rate === "number" && !isNaN(profile.rate)
+            ? String(profile.rate)
+            : "300"
+        );
       }
     }
   }, [profile, contactEdit, bioEdit, siteTitleEdit, siteTaglineEdit, rateEdit]);

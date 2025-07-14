@@ -12,29 +12,7 @@ import { useRouter } from "next/navigation";
 // Note interface removed (Notes feature deprecated)
 
 // Define Student interface for type safety
-interface Student {
-  id: string;
-  firstName: string;
-  lastName: string;
-  dob?: string;
-  skillLevel?: string;
-  progress?: number;
-  deleted?: boolean; // <-- allow soft delete
-}
 
-interface Booking {
-  id: string;
-  teacherId: string;
-  studentId: string;
-  date: string;
-  time: string;
-  length?: number;
-  status?: string;
-  slotId?: string;
-  createdAt?: string;
-  rate?: number; // Per-lesson rate at time of booking
-  // Add any other fields you use in bookings
-}
 
 
 const tabs = [
@@ -72,13 +50,7 @@ const getTabIcon = (tab: string) => {
 
 
 // --- Interfaces ---
-interface LessonSlot {
-  id: string;
-  date: string; // yyyy-mm-dd
-  time: string; // HH:mm or HH:mm:ss
-  bookedStudentIds?: string[];
-  [key: string]: unknown;
-}
+
 
 
 export default function TeacherDashboard() {
@@ -117,24 +89,23 @@ export default function TeacherDashboard() {
 
         // --- Fetch ALL students (not just those with bookings) ---
         // Fetch all students with role: "student" and filter out deleted in JS (handles missing field)
-        const studentsSnap = await getDocs(query(collection(db, "users"), where("role", "==", "student")));
-        // studentsList removed (not used)
-        // setStudents removed (state not tracked)
+        await getDocs(query(collection(db, "users"), where("role", "==", "student")));
+        // studentsSnap and studentsList removed (not used)
 
         // --- Fetch ALL bookings (real-time, single teacher app) ---
         const bookingsQuery = collection(db, "bookings");
-        onSnapshot(bookingsQuery, (snap) => {
+        onSnapshot(bookingsQuery, () => {
           // bookingsData removed (not used)
           // setBookings removed (state not tracked)
         });
 
         // --- Fetch lesson slots for this teacher (availability) ---
         const slotsQuery = query(collection(db, "lessonSlots"), where("teacherId", "==", firebaseUser.uid));
-        onSnapshot(slotsQuery, (snap) => {
+        onSnapshot(slotsQuery, () => {
           // Merge booking info into lessonSlots
-        // slots removed (not used)
-        // Attach booking info to slots
-        // setLessonSlots removed (state not tracked)
+          // slots removed (not used)
+          // Attach booking info to slots
+          // setLessonSlots removed (state not tracked)
         });
         // No cleanup needed for onAuthStateChanged itself
       } catch {

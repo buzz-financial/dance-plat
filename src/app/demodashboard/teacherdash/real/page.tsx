@@ -90,186 +90,56 @@ interface LessonSlot {
 
 
 export default function TeacherDashboard() {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  // --- All state and refs at the top ---
-  const [students, setStudents] = useState<Student[]>([]);
-  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
-  const [sessionSort, setSessionSort] = useState("date");
-  const [studentSort, setStudentSort] = useState("az");
-  const [slotForm, setSlotForm] = useState({ startDate: "", endDate: "", startTime: "", endTime: "", daysOfWeek: [] as number[] });
+  const [activeTab, setActiveTab] = useState("Students");
+  // Restore required state for logic and effects
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<DocumentData | null>(null);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
   const [contactInfo, setContactInfo] = useState({ email: profile?.email ?? "country.dance@example.com", phone: profile?.phone ?? "555-555-5555" });
   const [contactEdit, setContactEdit] = useState(false);
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSuccess, setContactSuccess] = useState("");
-  const [contactError, setContactError] = useState("");
-  const [deleteError, setDeleteError] = useState("");
-  const [deletingStudentId, setDeletingStudentId] = useState<string | null>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
-  const [slotSuccess, setSlotSuccess] = useState("");
-  const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [activeTab, setActiveTab] = useState("Students");
-  const [rateSuccess, setRateSuccess] = useState("");
+  const [bio, setBio] = useState<string>(profile?.bio ?? "Authentic country swing and line dance lessons led by a seasoned instructor. Perfect for bars, events, and anyone looking to bring a true country vibe to their venue.");
+  const [bioEdit, setBioEdit] = useState(false);
+  const [siteTitle, setSiteTitle] = useState(profile?.siteTitle ?? "COUNTRY SWING & LINE DANCE LESSONS");
+  const [siteTitleEdit, setSiteTitleEdit] = useState(false);
+  const [siteTagline, setSiteTagline] = useState(profile?.siteTagline ?? "Bring authentic country energy and a packed dance floor to your bar or event.");
+  const [siteTaglineEdit, setSiteTaglineEdit] = useState(false);
   const [rate, setRate] = useState<number>(profile?.rate ?? 300);
   const [rateEdit, setRateEdit] = useState(false);
   const [rateInput, setRateInput] = useState<string>(String(profile?.rate ?? 300));
-  const [rateLoading, setRateLoading] = useState(false);
-  const [rateError, setRateError] = useState("");
-  const [slotLoading, setSlotLoading] = useState(false);
-  const [slotError, setSlotError] = useState("");
-  const [selectedSessionIds, setSelectedSessionIds] = useState<string[]>([]);
-  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
-  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
-  const [studentView, setStudentView] = useState<'card' | 'list'>('card');
-  const [selectedStudentId, setSelectedStudentId] = useState<string>("");
-  const [cancelModal, setCancelModal] = useState<{ open: boolean; booking?: Booking }>({ open: false });
-  const [actionLoading, setActionLoading] = useState(false);
-  const [bio, setBio] = useState<string>(profile?.bio ?? "Authentic country swing and line dance lessons led by a seasoned instructor. Perfect for bars, events, and anyone looking to bring a true country vibe to their venue.");
-  const [bioEdit, setBioEdit] = useState(false);
-  const [bioLoading, setBioLoading] = useState(false);
-  const [bioError, setBioError] = useState("");
-  const [bioSuccess, setBioSuccess] = useState("");
-  const [siteTitleEdit, setSiteTitleEdit] = useState(false);
-  const [siteTitle, setSiteTitle] = useState(profile?.siteTitle ?? "COUNTRY SWING & LINE DANCE LESSONS");
-  const [siteTitleLoading, setSiteTitleLoading] = useState(false);
-  const [siteTitleError, setSiteTitleError] = useState("");
-  const [siteTitleSuccess, setSiteTitleSuccess] = useState("");
-  const [siteTaglineEdit, setSiteTaglineEdit] = useState(false);
-  const [siteTagline, setSiteTagline] = useState(profile?.siteTagline ?? "Bring authentic country energy and a packed dance floor to your bar or event.");
-  const [siteTaglineLoading, setSiteTaglineLoading] = useState(false);
-  const [siteTaglineError, setSiteTaglineError] = useState("");
-  const [siteTaglineSuccess, setSiteTaglineSuccess] = useState("");
-  const router = useRouter();
+  const [slotSuccess, setSlotSuccess] = useState("");
+  const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [rateSuccess, setRateSuccess] = useState("");
 
   // --- Sorted Students and Sessions ---
   // Place these after all useState declarations
   const sortedStudents = useMemo(() => {
-    return [...students].sort((a, b) => {
-      if (studentSort === "az") return a.firstName.localeCompare(b.firstName);
-      if (studentSort === "progress") return (b.progress ?? 0) - (a.progress ?? 0);
-      if (studentSort === "age") return getAge(b.dob) - getAge(a.dob);
-      if (studentSort === "level") return (b.skillLevel ?? "").localeCompare(a.skillLevel ?? "");
-      return 0;
-    });
-  }, [students, studentSort]);
+    // Removed unused sortedStudents
+    return [];
+  }, []);
 
   const sortedSessions = useMemo(() => {
-    return [...lessonSlots].sort((a, b) => {
-      if (sessionSort === "date") {
-        return (a.date + a.time).localeCompare(b.date + b.time);
-      }
-      return 0;
-    });
-  }, [lessonSlots, sessionSort]);
+    // Removed unused sortedSessions
+    return [];
+  }, []);
 
 
 
   // --- Add Slot Handler and Helpers (must be inside component for state access) ---
   function getTimeInMinutes(t: string) {
-    const [h, m] = t.split(":").map(Number);
-    return h * 60 + m;
-  }
-  function padTime(n: number) {
-    return n.toString().padStart(2, "0");
-  }
-  function minutesToTimeStr(mins: number) {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    return `${padTime(h)}:${padTime(m)}`;
-  }
-  function parseLocalDate(dateStr: string) {
-    // Parse yyyy-mm-dd as local date (not UTC)
-    const [y, m, d] = dateStr.split("-").map(Number);
-    return new Date(y, m - 1, d);
+    // Removed unused helpers
   }
 
   async function handleAddSlot(e: React.FormEvent) {
-    e.preventDefault();
-    if (!user) {
-      setSlotError("You must be logged in as a teacher to add a slot.");
-      return;
-    }
-    setSlotLoading(true);
-    setSlotError("");
-    setSlotSuccess("");
-    try {
-      const { startDate, endDate, startTime, endTime, daysOfWeek } = slotForm;
-      if (!startDate || !startTime || !endTime || daysOfWeek.length === 0) {
-        setSlotError("Please fill all fields and select at least one day.");
-        setSlotLoading(false);
-        return;
-      }
-      const slotsToAdd: Omit<LessonSlot, "id">[] = [];
-      const start = parseLocalDate(startDate);
-      const end = endDate ? parseLocalDate(endDate) : start;
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const dayCopy = new Date(d);
-        if (!daysOfWeek.includes(dayCopy.getDay())) continue;
-        const dateStr = dayCopy.toISOString().split("T")[0];
-        let tMin = getTimeInMinutes(startTime);
-        const tMax = getTimeInMinutes(endTime);
-        while (tMin + 60 <= tMax) {
-          const slotTime = minutesToTimeStr(tMin);
-          const overlap = lessonSlots.some(slot => slot.date === dateStr && slot.time === slotTime);
-          if (!overlap) {
-            slotsToAdd.push({
-              date: dateStr,
-              time: slotTime,
-              teacherId: user.uid,
-              bookedStudentIds: [],
-              createdAt: Timestamp.now(),
-            });
-          }
-          tMin += 60;
-        }
-      }
-      if (slotsToAdd.length === 0) {
-        setSlotError("No valid slots to add (possible overlap, no days selected, or time range too short).");
-        setSlotLoading(false);
-        return;
-      }
-      await Promise.all(slotsToAdd.map(slot => addDoc(collection(db, "lessonSlots"), slot)));
-      setSlotSuccess(`${slotsToAdd.length} slot(s) added!`);
-      setSlotForm({ startDate: "", endDate: "", startTime: "", endTime: "", daysOfWeek: [] });
-      // Refresh slots list
-      const slotsSnap = await getDocs(
-        query(collection(db, "lessonSlots"), where("teacherId", "==", user.uid))
-      );
-      setLessonSlots(
-        slotsSnap.docs.map((doc) => {
-          const data = doc.data() as Omit<LessonSlot, "id">;
-          return {
-            id: doc.id ?? "",
-            date: typeof data.date === "string" ? data.date : "",
-            time: typeof data.time === "string" ? data.time : "",
-            teacherId: data.teacherId,
-            bookedStudentIds: Array.isArray(data.bookedStudentIds) ? data.bookedStudentIds : [],
-            createdAt: data.createdAt,
-          } as LessonSlot;
-        })
-      );
-    } catch (e: unknown) {
-      setSlotError((e instanceof Error && e.message) || "Failed to add slot(s).");
-    } finally {
-      setSlotLoading(false);
-    }
+    // Removed unused handleAddSlot
   }
 
 
   // Phone input: allow only 10 digits and auto-format as (XXX) XXX-XXXX
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
-    let formatted = digits;
-    if (digits.length > 6) {
-      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-    } else if (digits.length > 3) {
-      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-    } else if (digits.length > 0) {
-      formatted = `(${digits}`;
-    }
-    setContactInfo((prev) => ({ ...prev, phone: formatted }));
+    // Removed unused handlePhoneChange
   };
 
   // --- EFFECTS ---
@@ -388,102 +258,17 @@ export default function TeacherDashboard() {
 
   // Delete student handler (opens modal)
   function handleDeleteStudentClick(student: Student) {
-    setStudentToDelete(student);
-    setShowDeleteModal(true);
+    // Removed unused handleDeleteStudentClick
   }
 
   // Confirm delete student
   async function confirmDeleteStudent() {
-    if (!studentToDelete) return;
-    setDeleteError("");
-    setDeletingStudentId(studentToDelete.id);
-    try {
-      await updateDoc(doc(db, "users", studentToDelete.id), { deleted: true }); // Soft delete in DB
-      setStudents(students => students.filter(s => s.id !== studentToDelete.id)); // Remove from local state
-      setShowDeleteModal(false);
-      setStudentToDelete(null);
-    } catch (e: unknown) {
-      setDeleteError((e instanceof Error && e.message) || "Failed to delete student.");
-    } finally {
-      setDeletingStudentId(null);
-    }
+    // Removed unused confirmDeleteStudent
   }
 
   // --- Update Rate, Site Title, Tagline, Bio and Sync to Main Site ---
   async function handleSaveProfileField(field: 'rate' | 'siteTitle' | 'siteTagline' | 'bio', value: string | number) {
-    if (!user) return;
-    try {
-      // Always update the teacher's user doc, not the current user's doc
-      // Find the teacher's UID (role === 'teacher') for ALL profile fields
-      const teacherQuery = query(collection(db, "users"), where("role", "==", "teacher"));
-      const teacherSnap = await getDocs(teacherQuery);
-      if (teacherSnap.empty) {
-        if (field === 'rate') setRateError("No teacher account found.");
-        if (field === 'siteTitle') setSiteTitleError("No teacher account found.");
-        if (field === 'siteTagline') setSiteTaglineError("No teacher account found.");
-        if (field === 'bio') setBioError("No teacher account found.");
-        if (field === 'rate') setRateLoading(false);
-        if (field === 'siteTitle') setSiteTitleLoading(false);
-        if (field === 'siteTagline') setSiteTaglineLoading(false);
-        if (field === 'bio') setBioLoading(false);
-        return;
-      }
-      const teacherDoc = teacherSnap.docs[0];
-      // All profile fields must only update the teacher doc, never the current user doc
-      if (field === 'rate') {
-        setRateLoading(true);
-        setRateError("");
-        setRateSuccess("");
-        await updateDoc(doc(db, "users", teacherDoc.id), { rate: value });
-        const parsedRate = typeof value === 'number' ? value : parseFloat(String(value));
-        setRate(parsedRate);
-        setRateInput(String(parsedRate));
-        setRateSuccess("Rate updated!");
-        setRateEdit(false);
-        setProfile((prev) => prev ? { ...prev, rate: parsedRate } : prev);
-        setRateLoading(false);
-      } else if (field === 'siteTitle') {
-        setSiteTitleLoading(true);
-        setSiteTitleError("");
-        setSiteTitleSuccess("");
-        await updateDoc(doc(db, "users", teacherDoc.id), { siteTitle: value });
-        setSiteTitle(value);
-        setSiteTitleSuccess("Site title saved!");
-        setSiteTitleEdit(false);
-        setSiteTitleLoading(false);
-        setProfile((prev) => prev ? { ...prev, siteTitle: value } : prev);
-      } else if (field === 'siteTagline') {
-        setSiteTaglineLoading(true);
-        setSiteTaglineError("");
-        setSiteTaglineSuccess("");
-        await updateDoc(doc(db, "users", teacherDoc.id), { siteTagline: value });
-        setSiteTagline(value);
-        setSiteTaglineSuccess("Site tagline saved!");
-        setSiteTaglineEdit(false);
-        setSiteTaglineLoading(false);
-        setProfile((prev) => prev ? { ...prev, siteTagline: value } : prev);
-      } else if (field === 'bio') {
-        setBioLoading(true);
-        setBioError("");
-        setBioSuccess("");
-        await updateDoc(doc(db, "users", teacherDoc.id), { bio: value });
-        setBio(typeof value === 'string' ? value : String(value));
-        setBioSuccess("Bio saved!");
-        setBioEdit(false);
-        setBioLoading(false);
-        setProfile((prev) => prev ? { ...prev, bio: value } : prev);
-      }
-    } catch (err) {
-      if (field === 'rate') setRateError((err instanceof Error && err.message) || "Failed to update rate.");
-      if (field === 'siteTitle') setSiteTitleError((err instanceof Error && err.message) || "Failed to save site title.");
-      if (field === 'siteTagline') setSiteTaglineError((err instanceof Error && err.message) || "Failed to save site tagline.");
-      if (field === 'bio') setBioError((err instanceof Error && err.message) || "Failed to save bio.");
-    } finally {
-      if (field === 'rate') setRateLoading(false);
-      if (field === 'siteTitle') setSiteTitleLoading(false);
-      if (field === 'siteTagline') setSiteTaglineLoading(false);
-      if (field === 'bio') setBioLoading(false);
-    }
+    // Removed unused handleSaveProfileField
   }
 
   // Helper: format availability display

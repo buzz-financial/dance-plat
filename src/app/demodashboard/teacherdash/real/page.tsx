@@ -411,13 +411,83 @@ export default function TeacherDashboard() {
               {activeTab === "Calendar" && (
                 <div className="w-full flex flex-col items-center">
                   <h2 className="text-2xl font-bold mb-4 text-[#bfa76a]">Calendar</h2>
-                  <p className="text-[#e9e6d7]">Calendar and scheduling features will appear here.</p>
+                  {bookings.length === 0 ? (
+                    <p className="text-[#e9e6d7]">No sessions found.</p>
+                  ) : (
+                    <div className="w-full max-w-3xl">
+                      {Object.entries(
+                        bookings
+                          .slice()
+                          .sort((a, b) => new Date(a.date + 'T' + (a.time || '00:00')).getTime() - new Date(b.date + 'T' + (b.time || '00:00')).getTime())
+                          .reduce((acc, booking) => {
+                            (acc[booking.date] = acc[booking.date] || []).push(booking);
+                            return acc;
+                          }, {} as Record<string, Booking[]>)
+                      ).map(([date, dayBookings]) => (
+                        <div key={date} className="mb-6">
+                          <div className="font-bold text-[#1fc2b7] text-lg mb-2">{date}</div>
+                          <ul className="divide-y divide-[#bfa76a]/20 bg-[#1a2328]/60 rounded-xl shadow">
+                            {dayBookings.map((booking: Booking) => {
+                              const student = students.find(s => s.id === booking.studentId);
+                              return (
+                                <li key={booking.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3">
+                                  <div>
+                                    <span className="font-semibold text-[#bfa76a]">{booking.time}</span>
+                                    {student && <span className="ml-2 text-xs text-[#e9e6d7]/70">{student.firstName} {student.lastName}</span>}
+                                  </div>
+                                  {booking.status && <span className="text-xs text-[#1fc2b7] mt-1 sm:mt-0">Status: {booking.status}</span>}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
               {activeTab === "Finance" && (
                 <div className="w-full flex flex-col items-center">
                   <h2 className="text-2xl font-bold mb-4 text-[#bfa76a]">Finance</h2>
-                  <p className="text-[#e9e6d7]">Financial reports and payment info will appear here.</p>
+                  {bookings.length === 0 ? (
+                    <p className="text-[#e9e6d7]">No payment data available.</p>
+                  ) : (
+                    <div className="w-full max-w-2xl space-y-6">
+                      {/* Earnings summary */}
+                      <div className="bg-[#1a2328]/70 rounded-xl p-4 border border-[#bfa76a]/20 flex flex-col gap-2">
+                        <div className="text-lg font-bold text-[#bfa76a]">Earnings Summary</div>
+                        <div className="flex flex-wrap gap-6 mt-2">
+                          <div className="flex flex-col"><span className="text-[#e9e6d7] text-2xl font-bold">${bookings.reduce((sum, b) => sum + (b.rate || 0), 0).toFixed(2)}</span><span className="text-xs text-[#bfa76a]">Total Earned</span></div>
+                          <div className="flex flex-col"><span className="text-[#e9e6d7] text-2xl font-bold">{bookings.length}</span><span className="text-xs text-[#bfa76a]">Sessions</span></div>
+                        </div>
+                      </div>
+                      {/* Recent payments/bookings */}
+                      <div className="bg-[#1a2328]/70 rounded-xl p-4 border border-[#bfa76a]/20">
+                        <div className="text-lg font-bold text-[#bfa76a] mb-2">Recent Payments</div>
+                        <ul className="divide-y divide-[#bfa76a]/20">
+                          {bookings
+                            .slice()
+                            .sort((a, b) => new Date(b.date + 'T' + (b.time || '00:00')).getTime() - new Date(a.date + 'T' + (a.time || '00:00')).getTime())
+                            .slice(0, 10)
+                            .map((booking) => {
+                              const student = students.find(s => s.id === booking.studentId);
+                              return (
+                                <li key={booking.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-2 py-2">
+                                  <div>
+                                    <span className="font-semibold text-[#bfa76a]">{booking.date} {booking.time}</span>
+                                    {student && <span className="ml-2 text-xs text-[#e9e6d7]/70">{student.firstName} {student.lastName}</span>}
+                                  </div>
+                                  <div className="flex flex-col items-end">
+                                    <span className="text-[#1fc2b7] font-bold">${booking.rate ? booking.rate.toFixed(2) : '0.00'}</span>
+                                    {booking.status && <span className="text-xs text-[#bfa76a]">{booking.status}</span>}
+                                  </div>
+                                </li>
+                              );
+                            })}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
               {activeTab === "Settings" && (

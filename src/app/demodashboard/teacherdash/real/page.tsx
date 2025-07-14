@@ -1,46 +1,10 @@
 "use client";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { doc, getDoc, collection, getDocs, query, where, DocumentData, addDoc, updateDoc, deleteDoc, onSnapshot, Timestamp } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, query, where, DocumentData, addDoc, updateDoc, onSnapshot, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
-// --- Calendar Tab Helpers and Constants ---
-// Used in Calendar tab rendering
-const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-// Only allow hour increments from 8:00 to 20:00 (8am to 8pm)
-const timeOptions: { value: string; label: string }[] = Array.from({ length: 13 }, (_, i) => {
-  const h = 8 + i;
-  const value = `${h.toString().padStart(2, "0")}:00`;
-  const label = `${((h % 12) || 12)}:00 ${h < 12 ? "AM" : "PM"}`;
-  return { value, label };
-});
-const today = new Date();
-
-function formatAvailability(slot: LessonSlot) {
-  // slot.date is yyyy-mm-dd, slot.time is HH:mm
-  const [year, month, day] = slot.date.split("-").map(Number);
-  const [hour, minute] = slot.time.split(":").map(Number);
-  const dateObj = new Date(year, month - 1, day, hour, minute);
-  // Format: July 3 at 2 PM
-  const monthName = dateObj.toLocaleString('default', { month: 'long' });
-  const dayNum = dateObj.getDate();
-  let hour12 = dateObj.getHours() % 12;
-  if (hour12 === 0) hour12 = 12;
-  const ampm = dateObj.getHours() < 12 ? 'AM' : 'PM';
-  return `${monthName} ${dayNum} at ${hour12} ${ampm}`;
-}
-
-function getStudentInfo(slot: LessonSlot, students: Student[]) {
-  if (!slot.bookedStudentIds || slot.bookedStudentIds.length === 0) return null;
-  const names = slot.bookedStudentIds
-    .map(id => {
-      const s = students.find(stu => stu.id === id);
-      return s ? `${s.firstName} ${s.lastName}` : id;
-    })
-    .join(", ");
-  return `Booked by: ${names}`;
-}
 
 // --- Add Slot Handler and Helpers (must be inside component for state access) ---
 // ...existing code...
@@ -126,10 +90,14 @@ interface LessonSlot {
 
 
 export default function TeacherDashboard() {
-  // --- All state and refs at the top ---
-  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  // --- All state and refs at the top ---
+  const [students, setStudents] = useState<Student[]>([]);
+  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
+  const [sessionSort, setSessionSort] = useState("date");
+  const [studentSort, setStudentSort] = useState("az");
   const [slotForm, setSlotForm] = useState({ startDate: "", endDate: "", startTime: "", endTime: "", daysOfWeek: [] as number[] });
+  const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<DocumentData | null>(null);
   const [contactInfo, setContactInfo] = useState({ email: profile?.email ?? "country.dance@example.com", phone: profile?.phone ?? "555-555-5555" });
   const [contactEdit, setContactEdit] = useState(false);
@@ -143,8 +111,6 @@ export default function TeacherDashboard() {
   const [slotSuccess, setSlotSuccess] = useState("");
   const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
   const [activeTab, setActiveTab] = useState("Students");
-  const [user, setUser] = useState<User | null>(null);
-  const [students, setStudents] = useState<Student[]>([]);
   const [rateSuccess, setRateSuccess] = useState("");
   const [rate, setRate] = useState<number>(profile?.rate ?? 300);
   const [rateEdit, setRateEdit] = useState(false);
@@ -153,12 +119,10 @@ export default function TeacherDashboard() {
   const [rateError, setRateError] = useState("");
   const [slotLoading, setSlotLoading] = useState(false);
   const [slotError, setSlotError] = useState("");
-  const [sessionSort, setSessionSort] = useState("date");
   const [selectedSessionIds, setSelectedSessionIds] = useState<string[]>([]);
   const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
   const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
   const [studentView, setStudentView] = useState<'card' | 'list'>('card');
-  const [studentSort, setStudentSort] = useState('az');
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [cancelModal, setCancelModal] = useState<{ open: boolean; booking?: Booking }>({ open: false });
   const [actionLoading, setActionLoading] = useState(false);

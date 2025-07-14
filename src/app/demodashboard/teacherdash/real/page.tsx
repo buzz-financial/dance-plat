@@ -36,14 +36,7 @@ interface Booking {
   rate?: number;
 }
 
-interface LessonSlot {
-  id: string;
-  date: string;
-  time: string;
-  teacherId?: string;
-  bookedStudentIds?: string[];
-  createdAt?: unknown;
-}
+
 
 const tabs = [
   "Students",
@@ -90,7 +83,6 @@ export default function TeacherDashboard() {
   const [profile, setProfile] = useState<DocumentData | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
   const [slotSuccess, setSlotSuccess] = useState("");
   const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
   const [rateSuccess, setRateSuccess] = useState("");
@@ -153,15 +145,9 @@ export default function TeacherDashboard() {
           setBookings(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Booking)));
         });
 
-        // Real-time lesson slots
-        const slotsQuery = query(collection(db, "lessonSlots"), where("teacherId", "==", firebaseUser.uid));
-        const unsubSlots = onSnapshot(slotsQuery, (snap) => {
-          setLessonSlots(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as LessonSlot)));
-        });
         // Cleanup
         return () => {
           unsubBookings();
-          unsubSlots();
         };
       } catch {
         // Handle error if needed

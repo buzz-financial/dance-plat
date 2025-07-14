@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, getDocs, query, where, DocumentData, onSnapshot } from "firebase/firestore";
@@ -87,9 +87,7 @@ export default function TeacherDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<DocumentData | null>(null);
-  const [students, setStudents] = useState<Student[]>([]); // used in effect
-  const [bookings, setBookings] = useState<Booking[]>([]); // used in effect
-  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]); // used in effect
+  // Removed unused students, bookings, lessonSlots state
   // Remove unused UI state: contactInfo, contactEdit, bio, bioEdit, siteTitle, siteTitleEdit, siteTagline, siteTaglineEdit, rate, rateEdit, rateInput
   const [slotSuccess, setSlotSuccess] = useState("");
   const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -123,7 +121,7 @@ export default function TeacherDashboard() {
         const studentsList = studentsSnap.docs
           .map(doc => ({ id: doc.id, ...(doc.data() as Omit<Student, "id">) }))
           .filter(student => student.deleted !== true); // Exclude only if deleted === true
-        setStudents(studentsList);
+        // setStudents removed (state not tracked)
 
         // --- Fetch ALL bookings (real-time, single teacher app) ---
         const bookingsQuery = collection(db, "bookings");
@@ -143,7 +141,7 @@ export default function TeacherDashboard() {
               rate: data.rate,
             } as Booking;
           });
-          setBookings(bookingsData);
+          // setBookings removed (state not tracked)
         });
 
         // --- Fetch lesson slots for this teacher (availability) ---
@@ -152,14 +150,7 @@ export default function TeacherDashboard() {
           // Merge booking info into lessonSlots
         const slots = snap.docs.map(doc => ({ id: doc.id, ...(doc.data() as Omit<LessonSlot, "id">) }) as LessonSlot);
         // Attach booking info to slots
-        setLessonSlots(slots.map(slot => ({
-          id: typeof slot.id === "string" ? slot.id : "",
-          date: typeof slot.date === "string" ? slot.date : "",
-          time: typeof slot.time === "string" ? slot.time : "",
-          teacherId: typeof slot.teacherId === "string" ? slot.teacherId : "",
-          bookedStudentIds: Array.isArray(slot.bookedStudentIds) ? slot.bookedStudentIds : [],
-          createdAt: slot.createdAt,
-        })));
+        // setLessonSlots removed (state not tracked)
         });
         // No cleanup needed for onAuthStateChanged itself
       } catch {

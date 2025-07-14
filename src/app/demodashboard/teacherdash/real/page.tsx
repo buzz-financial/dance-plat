@@ -159,6 +159,7 @@ export default function TeacherDashboard() {
   // Sync profile fields to local state when profile changes
   useEffect(() => {
     if (profile) {
+      // Use the exact same fallback logic as the home page for all fields
       setContactInfo((prev) => {
         if (!contactEdit) {
           return {
@@ -183,26 +184,26 @@ export default function TeacherDashboard() {
       }
       if (!siteTitleEdit) {
         setSiteTitle(
-          typeof profile.siteTitle === "string" && profile.siteTitle.trim()
+          profile.siteTitle && profile.siteTitle.trim()
             ? profile.siteTitle
             : "COUNTRY SWING & LINE DANCE LESSONS"
         );
       }
       if (!siteTaglineEdit) {
         setSiteTagline(
-          typeof profile.siteTagline === "string" && profile.siteTagline.trim()
+          profile.siteTagline && profile.siteTagline.trim()
             ? profile.siteTagline
             : "Bring authentic country energy and a packed dance floor to your bar or event."
         );
       }
       if (!rateEdit) {
         setRate(
-          typeof profile.rate === "number" && !isNaN(profile.rate)
+          typeof profile.rate === 'number' && !isNaN(profile.rate)
             ? profile.rate
             : 300
         );
         setRateInput(
-          typeof profile.rate === "number" && !isNaN(profile.rate)
+          typeof profile.rate === 'number' && !isNaN(profile.rate)
             ? String(profile.rate)
             : "300"
         );

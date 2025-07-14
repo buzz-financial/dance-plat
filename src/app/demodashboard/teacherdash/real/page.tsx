@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { doc, getDoc, collection, getDocs, query, where, DocumentData, addDoc, updateDoc, onSnapshot, Timestamp } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, query, where, DocumentData, onSnapshot } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 
@@ -65,15 +65,7 @@ const getTabIcon = (tab: string) => {
   }
 };
 
-function getAge(dob?: string) {
-    if (!dob) return 0;
-    const birth = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-    return age;
-  }
+
 
 
 
@@ -95,52 +87,22 @@ export default function TeacherDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<DocumentData | null>(null);
-  const [students, setStudents] = useState<Student[]>([]);
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
-  const [contactInfo, setContactInfo] = useState({ email: profile?.email ?? "country.dance@example.com", phone: profile?.phone ?? "555-555-5555" });
-  const [contactEdit, setContactEdit] = useState(false);
-  const [bio, setBio] = useState<string>(profile?.bio ?? "Authentic country swing and line dance lessons led by a seasoned instructor. Perfect for bars, events, and anyone looking to bring a true country vibe to their venue.");
-  const [bioEdit, setBioEdit] = useState(false);
-  const [siteTitle, setSiteTitle] = useState(profile?.siteTitle ?? "COUNTRY SWING & LINE DANCE LESSONS");
-  const [siteTitleEdit, setSiteTitleEdit] = useState(false);
-  const [siteTagline, setSiteTagline] = useState(profile?.siteTagline ?? "Bring authentic country energy and a packed dance floor to your bar or event.");
-  const [siteTaglineEdit, setSiteTaglineEdit] = useState(false);
-  const [rate, setRate] = useState<number>(profile?.rate ?? 300);
-  const [rateEdit, setRateEdit] = useState(false);
-  const [rateInput, setRateInput] = useState<string>(String(profile?.rate ?? 300));
+  const [students, setStudents] = useState<Student[]>([]); // used in effect
+  const [bookings, setBookings] = useState<Booking[]>([]); // used in effect
+  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]); // used in effect
+  // Remove unused UI state: contactInfo, contactEdit, bio, bioEdit, siteTitle, siteTitleEdit, siteTagline, siteTaglineEdit, rate, rateEdit, rateInput
   const [slotSuccess, setSlotSuccess] = useState("");
   const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
   const [rateSuccess, setRateSuccess] = useState("");
 
   // --- Sorted Students and Sessions ---
   // Place these after all useState declarations
-  const sortedStudents = useMemo(() => {
-    // Removed unused sortedStudents
-    return [];
-  }, []);
 
-  const sortedSessions = useMemo(() => {
-    // Removed unused sortedSessions
-    return [];
-  }, []);
 
 
 
   // --- Add Slot Handler and Helpers (must be inside component for state access) ---
-  function getTimeInMinutes(t: string) {
-    // Removed unused helpers
-  }
 
-  async function handleAddSlot(e: React.FormEvent) {
-    // Removed unused handleAddSlot
-  }
-
-
-  // Phone input: allow only 10 digits and auto-format as (XXX) XXX-XXXX
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Removed unused handlePhoneChange
-  };
 
   // --- EFFECTS ---
   useEffect(() => {
@@ -207,33 +169,7 @@ export default function TeacherDashboard() {
     return () => {};
   }, [router]);
 
-  useEffect(() => {
-    if (profile) {
-      // Only update local state if not currently editing that field
-      setContactInfo((prev) => {
-        if (!contactEdit) {
-          return {
-            email: profile?.email || "",
-            phone: profile.phone || "",
-          };
-        }
-        return prev;
-      });
-      if (!bioEdit) {
-        setBio(typeof profile.bio === "string" ? profile.bio : "");
-      }
-      if (!siteTitleEdit) {
-        setSiteTitle(typeof profile.siteTitle === "string" ? profile.siteTitle : "MUSIC LESSONS");
-      }
-      if (!siteTaglineEdit) {
-        setSiteTagline(typeof profile.siteTagline === "string" ? profile.siteTagline : "Personalized. Professional. Powerful.");
-      }
-      if (!rateEdit) {
-        setRate(typeof profile.rate === "number" ? profile.rate : 60);
-        setRateInput(String(typeof profile.rate === "number" ? profile.rate : 60));
-      }
-    }
-  }, [profile, contactEdit, bioEdit, siteTitleEdit, siteTaglineEdit, rateEdit]);
+  // Removed effect for updating unused UI state
 
   // Auto-hide slotSuccess after 3 seconds
   useEffect(() => {
@@ -257,19 +193,7 @@ export default function TeacherDashboard() {
   
 
   // Delete student handler (opens modal)
-  function handleDeleteStudentClick(student: Student) {
-    // Removed unused handleDeleteStudentClick
-  }
 
-  // Confirm delete student
-  async function confirmDeleteStudent() {
-    // Removed unused confirmDeleteStudent
-  }
-
-  // --- Update Rate, Site Title, Tagline, Bio and Sync to Main Site ---
-  async function handleSaveProfileField(field: 'rate' | 'siteTitle' | 'siteTagline' | 'bio', value: string | number) {
-    // Removed unused handleSaveProfileField
-  }
 
   // Helper: format availability display
   // Removed unused formatAvailability helper

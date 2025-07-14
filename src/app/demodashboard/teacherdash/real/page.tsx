@@ -77,6 +77,13 @@ const getTabIcon = (tab: string) => {
 
 
 export default function TeacherDashboard() {
+  // Phone number formatting helper
+  function formatPhoneNumber(value: string) {
+    const digits = value.replace(/\D/g, "");
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+  }
   const [activeTab, setActiveTab] = useState<string>("Students");
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -335,6 +342,17 @@ export default function TeacherDashboard() {
 
   // UI rendering (structure and styles adapted from demo dashboard)
   // UI rendering (structure and styles adapted from demo dashboard)
+
+
+
+  // Auto-hide contactSuccess after 2.5 seconds
+  useEffect(() => {
+    if (contactSuccess) {
+      const t = setTimeout(() => setContactSuccess("") , 2500);
+      return () => clearTimeout(t);
+    }
+  }, [contactSuccess]);
+
   return (
     <>
       <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#0a232e] via-[#1a2d36] to-[#1a2328] max-w-screen overflow-x-hidden font-sans" style={{fontFamily: 'Inter, Segoe UI, Arial, Georgia, serif'}}>
@@ -630,7 +648,7 @@ export default function TeacherDashboard() {
                           <input
                             className="rounded px-2 py-1 bg-[#0a232e] text-[#e9e6d7] border border-[#bfa76a]/40"
                             value={contactInfo.phone}
-                            onChange={e => setContactInfo((prev) => ({ ...prev, phone: e.target.value }))}
+                            onChange={e => setContactInfo((prev) => ({ ...prev, phone: formatPhoneNumber(e.target.value) }))}
                             placeholder="Phone"
                             disabled={contactLoading}
                           />
@@ -673,6 +691,16 @@ export default function TeacherDashboard() {
                       )}
                       {contactError && <div className="text-red-400 text-xs mt-1">{contactError}</div>}
                       {contactSuccess && <div className="text-green-400 text-xs mt-1">{contactSuccess}</div>}
+// Place this after all useState/useEffect hooks, before return in TeacherDashboard
+// Auto-hide contactSuccess after 2.5 seconds
+// (This must be inside the TeacherDashboard function, not inside JSX)
+// ...existing hooks...
+useEffect(() => {
+  if (contactSuccess) {
+    const t = setTimeout(() => setContactSuccess("") , 2500);
+    return () => clearTimeout(t);
+  }
+}, [contactSuccess]);
                     </div>
                   </div>
                 </div>

@@ -92,9 +92,9 @@ export default function TeacherDashboard() {
   const [contactLoading, setContactLoading] = useState<boolean>(false);
   const [contactSuccess, setContactSuccess] = useState<string>("");
   const [contactError, setContactError] = useState<string>("");
-  const [rate, setRate] = useState<number>(profile?.rate ?? 60);
+  const [rate, setRate] = useState<number>(profile?.rate ?? 300);
   const [rateEdit, setRateEdit] = useState<boolean>(false);
-  const [rateInput, setRateInput] = useState<string>(String(profile?.rate ?? 60));
+  const [rateInput, setRateInput] = useState<string>(String(profile?.rate ?? 300));
   const [rateLoading, setRateLoading] = useState<boolean>(false);
   const [rateError, setRateError] = useState<string>("");
   const [bio, setBio] = useState<string>(profile?.bio ?? "");
@@ -162,24 +162,24 @@ export default function TeacherDashboard() {
       setContactInfo((prev) => {
         if (!contactEdit) {
           return {
-            email: typeof profile.email === "string" ? profile.email : "",
-            phone: typeof profile.phone === "string" ? profile.phone : "",
+            email: typeof profile.email === "string" ? profile.email : "", // from site
+            phone: typeof profile.phone === "string" ? profile.phone : "", // from site
           };
         }
         return prev;
       });
       if (!bioEdit) {
-        setBio(typeof profile.bio === "string" ? profile.bio : "");
+        setBio(typeof profile.bio === "string" ? profile.bio : ""); // from site
       }
       if (!siteTitleEdit) {
-        setSiteTitle(typeof profile.siteTitle === "string" ? profile.siteTitle : "DANCE LESSONS");
+        setSiteTitle(typeof profile.siteTitle === "string" ? profile.siteTitle : "DANCE LESSONS"); // from site
       }
       if (!siteTaglineEdit) {
-        setSiteTagline(typeof profile.siteTagline === "string" ? profile.siteTagline : "Personalized. Professional. Powerful.");
+        setSiteTagline(typeof profile.siteTagline === "string" ? profile.siteTagline : "Personalized. Professional. Powerful."); // from site
       }
       if (!rateEdit) {
-        setRate(typeof profile.rate === "number" ? profile.rate : 60);
-        setRateInput(String(typeof profile.rate === "number" ? profile.rate : 60));
+        setRate(typeof profile.rate === "number" ? profile.rate : 300);
+        setRateInput(String(typeof profile.rate === "number" ? profile.rate : 300));
       }
     }
   }, [profile, contactEdit, bioEdit, siteTitleEdit, siteTaglineEdit, rateEdit]);
@@ -213,7 +213,6 @@ export default function TeacherDashboard() {
         setRateSuccess("Rate updated!");
         setRateEdit(false);
         setProfile((prev) => prev ? { ...prev, rate: parsedRate } : prev);
-        setRateLoading(false);
       } else if (field === 'siteTitle') {
         setSiteTitleLoading(true);
         setSiteTitleError("");

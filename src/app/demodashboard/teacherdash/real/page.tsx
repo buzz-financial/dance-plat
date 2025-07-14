@@ -11,9 +11,39 @@ import { useRouter } from "next/navigation";
 
 // Note interface removed (Notes feature deprecated)
 
-// Define Student interface for type safety
+// --- Interfaces ---
+interface Student {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  dob?: string;
+  skillLevel?: string;
+  progress?: number;
+  deleted?: boolean;
+}
 
+interface Booking {
+  id: string;
+  teacherId: string;
+  studentId: string;
+  date: string;
+  time: string;
+  length?: number;
+  status?: string;
+  slotId?: string;
+  createdAt?: string;
+  rate?: number;
+}
 
+interface LessonSlot {
+  id: string;
+  date: string;
+  time: string;
+  teacherId?: string;
+  bookedStudentIds?: string[];
+  createdAt?: unknown;
+}
 
 const tabs = [
   "Students",
@@ -54,42 +84,42 @@ const getTabIcon = (tab: string) => {
 
 
 export default function TeacherDashboard() {
-  const [activeTab, setActiveTab] = useState("Students");
+  const [activeTab, setActiveTab] = useState<string>("Students");
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<DocumentData | null>(null);
-  const [students, setStudents] = useState<any[]>([]);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [lessonSlots, setLessonSlots] = useState<any[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [lessonSlots, setLessonSlots] = useState<LessonSlot[]>([]);
   const [slotSuccess, setSlotSuccess] = useState("");
   const slotSuccessTimeout = useRef<NodeJS.Timeout | null>(null);
   const [rateSuccess, setRateSuccess] = useState("");
   // Settings/profile state
-  const [contactInfo, setContactInfo] = useState({ email: "", phone: "" });
-  const [contactEdit, setContactEdit] = useState(false);
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSuccess, setContactSuccess] = useState("");
-  const [contactError, setContactError] = useState("");
+  const [contactInfo, setContactInfo] = useState<{ email: string; phone: string }>({ email: "", phone: "" });
+  const [contactEdit, setContactEdit] = useState<boolean>(false);
+  const [contactLoading, setContactLoading] = useState<boolean>(false);
+  const [contactSuccess, setContactSuccess] = useState<string>("");
+  const [contactError, setContactError] = useState<string>("");
   const [rate, setRate] = useState<number>(profile?.rate ?? 60);
-  const [rateEdit, setRateEdit] = useState(false);
+  const [rateEdit, setRateEdit] = useState<boolean>(false);
   const [rateInput, setRateInput] = useState<string>(String(profile?.rate ?? 60));
-  const [rateLoading, setRateLoading] = useState(false);
-  const [rateError, setRateError] = useState("");
+  const [rateLoading, setRateLoading] = useState<boolean>(false);
+  const [rateError, setRateError] = useState<string>("");
   const [bio, setBio] = useState<string>(profile?.bio ?? "");
-  const [bioEdit, setBioEdit] = useState(false);
-  const [bioLoading, setBioLoading] = useState(false);
-  const [bioError, setBioError] = useState("");
-  const [bioSuccess, setBioSuccess] = useState("");
-  const [siteTitleEdit, setSiteTitleEdit] = useState(false);
-  const [siteTitle, setSiteTitle] = useState(profile?.siteTitle ?? "DANCE LESSONS");
-  const [siteTitleLoading, setSiteTitleLoading] = useState(false);
-  const [siteTitleError, setSiteTitleError] = useState("");
-  const [siteTitleSuccess, setSiteTitleSuccess] = useState("");
-  const [siteTaglineEdit, setSiteTaglineEdit] = useState(false);
-  const [siteTagline, setSiteTagline] = useState(profile?.siteTagline ?? "Personalized. Professional. Powerful.");
-  const [siteTaglineLoading, setSiteTaglineLoading] = useState(false);
-  const [siteTaglineError, setSiteTaglineError] = useState("");
-  const [siteTaglineSuccess, setSiteTaglineSuccess] = useState("");
+  const [bioEdit, setBioEdit] = useState<boolean>(false);
+  const [bioLoading, setBioLoading] = useState<boolean>(false);
+  const [bioError, setBioError] = useState<string>("");
+  const [bioSuccess, setBioSuccess] = useState<string>("");
+  const [siteTitleEdit, setSiteTitleEdit] = useState<boolean>(false);
+  const [siteTitle, setSiteTitle] = useState<string>(profile?.siteTitle ?? "DANCE LESSONS");
+  const [siteTitleLoading, setSiteTitleLoading] = useState<boolean>(false);
+  const [siteTitleError, setSiteTitleError] = useState<string>("");
+  const [siteTitleSuccess, setSiteTitleSuccess] = useState<string>("");
+  const [siteTaglineEdit, setSiteTaglineEdit] = useState<boolean>(false);
+  const [siteTagline, setSiteTagline] = useState<string>(profile?.siteTagline ?? "Personalized. Professional. Powerful.");
+  const [siteTaglineLoading, setSiteTaglineLoading] = useState<boolean>(false);
+  const [siteTaglineError, setSiteTaglineError] = useState<string>("");
+  const [siteTaglineSuccess, setSiteTaglineSuccess] = useState<string>("");
 
   // --- Sorted Students and Sessions ---
   // Place these after all useState declarations
@@ -115,18 +145,18 @@ export default function TeacherDashboard() {
 
         // Fetch all students (not deleted)
         const studentsSnap = await getDocs(query(collection(db, "users"), where("role", "==", "student")));
-        setStudents(studentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)).filter(s => !s.deleted));
+        setStudents(studentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Student)).filter(s => !s.deleted));
 
         // Real-time bookings
         const bookingsQuery = query(collection(db, "bookings"), where("teacherId", "==", firebaseUser.uid));
         const unsubBookings = onSnapshot(bookingsQuery, (snap) => {
-          setBookings(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          setBookings(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Booking)));
         });
 
         // Real-time lesson slots
         const slotsQuery = query(collection(db, "lessonSlots"), where("teacherId", "==", firebaseUser.uid));
         const unsubSlots = onSnapshot(slotsQuery, (snap) => {
-          setLessonSlots(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          setLessonSlots(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as LessonSlot)));
         });
         // Cleanup
         return () => {
@@ -203,7 +233,7 @@ export default function TeacherDashboard() {
         setSiteTitleError("");
         setSiteTitleSuccess("");
         await updateDoc(doc(db, "users", teacherDoc.id), { siteTitle: value });
-        setSiteTitle(value);
+        setSiteTitle(String(value));
         setSiteTitleSuccess("Site title saved!");
         setSiteTitleEdit(false);
         setSiteTitleLoading(false);
@@ -213,7 +243,7 @@ export default function TeacherDashboard() {
         setSiteTaglineError("");
         setSiteTaglineSuccess("");
         await updateDoc(doc(db, "users", teacherDoc.id), { siteTagline: value });
-        setSiteTagline(value);
+        setSiteTagline(String(value));
         setSiteTaglineSuccess("Site tagline saved!");
         setSiteTaglineEdit(false);
         setSiteTaglineLoading(false);

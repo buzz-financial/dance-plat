@@ -691,16 +691,6 @@ export default function TeacherDashboard() {
                       )}
                       {contactError && <div className="text-red-400 text-xs mt-1">{contactError}</div>}
                       {contactSuccess && <div className="text-green-400 text-xs mt-1">{contactSuccess}</div>}
-// Place this after all useState/useEffect hooks, before return in TeacherDashboard
-// Auto-hide contactSuccess after 2.5 seconds
-// (This must be inside the TeacherDashboard function, not inside JSX)
-// ...existing hooks...
-useEffect(() => {
-  if (contactSuccess) {
-    const t = setTimeout(() => setContactSuccess("") , 2500);
-    return () => clearTimeout(t);
-  }
-}, [contactSuccess]);
                     </div>
                   </div>
                 </div>
